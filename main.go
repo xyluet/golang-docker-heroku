@@ -11,12 +11,12 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/ping", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+		c.HTML(http.StatusOK, "index.html", gin.H{
 			"action": "pong",
 		})
 	})
 	r.GET("/pong", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+		c.HTML(http.StatusOK, "index.html", gin.H{
 			"action": "ping",
 		})
 	})
