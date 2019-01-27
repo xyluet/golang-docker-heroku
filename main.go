@@ -17,7 +17,7 @@ func main() {
 	})
 	r.GET("/pong", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "pong.tmpl", gin.H{
-			"curse": "dumbass",
+			"stuff": "magic",
 		})
 	})
 	r.Run()
