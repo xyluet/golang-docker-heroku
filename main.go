@@ -11,13 +11,13 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"action": "pong",
 		})
 	})
 	r.GET("/pong", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "pong.tmpl", gin.H{
-			"stuff": "magic",
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"action": "ping",
 		})
 	})
 	r.Run()
