@@ -1,22 +1,19 @@
-FROM golang:alpine
+FROM golang:1.16-alpine as builder
 RUN go version
-
-ADD . /go/src/app
-WORKDIR /go/src/app
-
+RUN apk add --no-cache git
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+COPY . .
+RUN go build -o=bin/main .
 # Expose 8080
 # Gin will use the PORT env var
-ENV PORT 8080
-EXPOSE 8080
+# ENV PORT 8081
 
-# Install git
-RUN apk add --no-cache git
-# Fetch deps
-RUN go get
-# Remove git
-RUN apk del git
-
-# Compile app
-RUN go build -o main .
-# Run app
-CMD ["/go/src/app/main"]
+FROM alpine:3
+RUN apk add --no-cache ca-certificates tzdata
+COPY --from=builder /src/bin /bin
+COPY --from=builder /src/start.sh start.sh
+USER nobody:nobody
+CMD ["/bin/main"]
+# ENTRYPOINT [ "sh", "start.sh" ]
