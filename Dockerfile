@@ -12,9 +12,5 @@ RUN apk add --no-cache ca-certificates tzdata
 COPY --from=builder /src/bin /bin
 # COPY --from=builder /src/start.sh start.sh
 USER nobody:nobody
-# Expose 8080
-# Gin will use the PORT env var
-ENV PORT 8080
-EXPOSE 8080
 CMD ["/bin/main"]
 # ENTRYPOINT [ "sh", "start.sh" ]

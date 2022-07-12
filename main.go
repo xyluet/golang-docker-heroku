@@ -1,24 +1,19 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"os"
 )
 
 func main() {
-	r := gin.Default()
-	r.LoadHTMLGlob("templates/*")
-
-	r.GET("/ping", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"action": "pong",
+	port := os.Getenv("PORT")
+	router := http.NewServeMux()
+	router.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_ = json.NewEncoder(w).Encode(map[string]interface{}{
+			"port": port,
 		})
-	})
-	r.GET("/pong", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"action": "ping",
-		})
-	})
-	r.Run()
+	}))
+	http.ListenAndServe(fmt.Sprintf(":%s", port), router)
 }
